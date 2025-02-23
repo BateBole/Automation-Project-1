@@ -67,6 +67,10 @@ it('Check that check box list is correct', () => {
     // Ensure the third checkbox remains unchecked
     cy.get('input[type="checkbox"]').eq(1).should('be.checked')
 })
+
+it('Email input should support correct format', () => {
+    cy.get('input[name="email"]').should('have.attr', 'type', 'email')
+});
           
     /*
 BONUS TASK: add visual tests for registration form 3
@@ -78,7 +82,7 @@ Task list:
         * list of cities changes depending on the choice of country
         * if city is already chosen and country is updated, then city choice should be removed
     * checkboxes, their content and links
-    
+    * email format
  */
 
 
@@ -97,9 +101,17 @@ it.only('User can submit form with all fields added', () => {
     // Add test steps for filling in ALL fields
     cy.log('Username will be filled')
     cy.get('#name').type('John')
+    cy.get('input[name="email"]').type('validemail@yeap.com')
     cy.get('#country').select('Estonia')
     cy.get('#city').select('Tallinn')
-    cy.get('Date of registration').select('22-2-2025')
-    cy.get('.submit_button').should('be.enabled').click()
-    cy.get('#success_message').should('be.visible')
+    cy.get('input[type="date"]').invoke('val', '22-02-2025')
+    cy.get('input[type="radio"]').eq(0).check().should('be.checked')
+    cy.get('input[name="birthday"]').type('1987-09-15')
+    cy.get('input[type="checkbox"]').eq(0).check()
+    cy.get('input[type="checkbox"]').eq(1).check()
+    cy.get('input[type="file"]').click()
+    cy.get('input[type="file"]').selectFile('C:/Users/karin/Downloads/cypress_simple_tests-master/cypress_simple_tests/cypress/fixtures/cypress_logo.png', { force: true });
+    cy.contains('button', 'Submit file').click()
+    // Check if the success message "Submission received" is displayed
+    cy.contains('Submission received').should('be.visible');
     })
